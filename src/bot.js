@@ -48,7 +48,7 @@ client.on('message',(message)=>{
     if (message.content.startsWith(PREFIX)){
         const [CMD_NAME, ...args] = message.content
             .toLowerCase()
-            .replace(/[.!?]/,'')
+            .replace(/[.!?]$/,'')
             .trim()
             .substring(PREFIX.length)
             .split(/\s+/);
@@ -65,7 +65,6 @@ client.on('message',(message)=>{
                 if (args.includes(i)) {
                     console.log(args.includes(i));
                     message.react(ICONS[i])
-                        .then(console.log)
                         .catch(console.error);
                 }
             });
