@@ -1,7 +1,8 @@
 require('dotenv').config();
 
-const { Client } = require('discord.js');
-const client = new Client();
+const discord = require('discord.js');
+const client = new discord.Client();
+
 const PREFIX = "!";
 const TOKEN_TYPE = {
     "c": "Compétence",
@@ -10,6 +11,32 @@ const TOKEN_TYPE = {
     "b": "Bonus",
     "a": "Autre"
 };
+
+const ICONS = {
+    "c": "🔵", //blue
+    "r": "🔴",    //red
+    "f": "⚪", //white
+    "b": "🟢", //green
+    "a": "🔘", // gray
+    "café": "☕",
+    "thé": "🍵",
+    "bière": "🍺",
+    "cocktail": "🍹"
+};
+
+const BOISSONS = ["café", "thé", "bière", "cocktail"];
+
+function tokenlist(){
+    let listOfTokens="";
+    for(let i in TOKEN_TYPE){
+        listOfTokens+= `**${i}** ` + ICONS[i] + ` ${TOKEN_TYPE[i]}` + "  ";
+    }
+    return listOfTokens;
+}
+
+const HELPMESSAGE = "besoin d'aide? Le format est `!okdzin 2c 2r 1f 1b 1a`\n" +
+    tokenlist() + "\n(Je ne suis pas regardant sur les majuscules. Bisous.)";
+
 
 client.on('ready', () =>{
     console.log('The bot has logged in')
@@ -32,17 +59,27 @@ client.on('message',(message)=>{
             let answer="";
             let level=0;
 
+            // On commence par les boissons
+            BOISSONS.forEach(function (i){
+                if (args.includes(i)) {
+                    console.log(args.includes(i));
+                    message.react(ICONS[i])
+                        .then(console.log)
+                        .catch(console.error);
+                }
+            });
+
+
             if (args.length === 0) {
-                message.reply("besoin d'aide? Le format est `!okdzin 1d 2c 2r 1f 1b 1a`\n"+
-                "**C**: Compétence, **R**:Risque, **F**: Foi, **B**: Bonus, **A**: Autre\n"+
-                "(Je ne suis pas regardant sur les majuscules. Bisous.)");
+                message.reply(HELPMESSAGE);
                 return;
             }
 
+            message.react("👍🏼");
             // Create the bag of tokens
 
             args.forEach(arg =>{
-                let token = arg.match(/([1-9]+)([crfba])/);
+                let token = arg.match(/^([1-9]+)([crfba])$/);
                 if (token != null) {
                     let num=parseInt(token[1]);
                     let letter=token[2];
@@ -55,6 +92,7 @@ client.on('message',(message)=>{
                 }
             })
 
+            if (tokens.length==0) {return;}
 
             // Tirage
 
@@ -72,10 +110,7 @@ client.on('message',(message)=>{
 
             // Résultat
             for (let key in result) {
-                answer += "\n**"+result[key]+"** "+TOKEN_TYPE[key]+"";
-                if (result[key]>1 && key != "b") {
-                    answer += "s"
-                }
+                answer += "\n**"+result[key]+"** "+ICONS[key]+"";
 
                 level += result[key];
             }
