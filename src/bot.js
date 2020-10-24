@@ -48,6 +48,7 @@ client.on('message',(message)=>{
     if (message.content.startsWith(PREFIX)){
         const [CMD_NAME, ...args] = message.content
             .toLowerCase()
+            .replace(/[.!?]/,'')
             .trim()
             .substring(PREFIX.length)
             .split(/\s+/);
