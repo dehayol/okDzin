@@ -128,12 +128,12 @@ client.on('message',(message)=>{
 
             // Résultat
             for (let key in result) {
-                    for (let k = 0; k<key ; k++) {
-                        answer += ICONS[key] + " "
+                    for (let k = 0; k<result[key] ; k++) {
+                        answer += ICONS[key] + " ";
                     }
             }
 
-            answer = "**Total: "+level+" - Tirage: **"+answer;
+            answer = "\n**Total: "+level+" - Tirage: **"+answer;
 
             message.reply(answer);
 
