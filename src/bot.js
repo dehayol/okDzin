@@ -87,6 +87,7 @@ client.on('message',(message)=>{
                         draw=num;
                     }
                     for (let i = 0; i<num; i++) {
+                            level++;
                             tokens.push(letter);
                     }
                 }
@@ -106,13 +107,10 @@ client.on('message',(message)=>{
                 }
                 tokens.splice(pos,1);
             }
-            console.log(result);
 
             // Résultat
             for (let key in result) {
                 answer += "\n**"+result[key]+"** "+ICONS[key]+"";
-
-                level += result[key];
             }
 
             answer = "\n**Total: "+level+"**"+answer;
