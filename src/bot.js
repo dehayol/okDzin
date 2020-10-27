@@ -79,7 +79,7 @@ client.on('message',(message)=>{
 
             args.forEach(arg =>{
                 let cheater = arg.match(/^([1-9]{2,})([crfba])$/);
-                if (cheater) {
+                if (cheater.length>0) {
                     message.answer("Plus de 10 jetons d'une même couleur? Tricheur!");
                     message.react("👎");
                     return;
