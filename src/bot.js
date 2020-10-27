@@ -25,7 +25,7 @@ const ICONS = {
     "cocktail": "🍹"
 };
 
-const BOISSONS = ["café", "thé", "bière", "cocktail", "boisson""];
+const BOISSONS = ["café", "thé", "bière", "cocktail", "boisson"];
 
 function tokenlist(){
     let listOfTokens="";
