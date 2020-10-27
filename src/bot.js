@@ -70,7 +70,7 @@ client.on('message',(message)=>{
             });
 
 
-            if (args.length === 0) {
+            if (cheater != null) {
                 message.reply(HELPMESSAGE);
                 return;
             }
@@ -79,6 +79,7 @@ client.on('message',(message)=>{
 
             args.forEach(arg =>{
                 let cheater = arg.match(/^([1-9]{2,})([crfba])$/);
+                console.log(cheater);
                 if (cheater.length>0) {
                     message.answer("Plus de 10 jetons d'une même couleur? Tricheur!");
                     message.react("👎");
@@ -88,6 +89,7 @@ client.on('message',(message)=>{
                 }
 
                 let token = arg.match(/^([1-9])([crfba])$/);
+                console.log(token);
                 if (token != null) {
                     let num=parseInt(token[1]);
                     let letter=token[2];
