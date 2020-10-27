@@ -75,19 +75,26 @@ client.on('message',(message)=>{
                 return;
             }
 
-            // Create the bag of tokens
-
+            // Check cheaters
+            let cheat = false;
             args.forEach(arg =>{
                 let cheater = arg.match(/^([1-9]{2,})([crfba])$/);
-                console.log(cheater);
                 if (cheater != null) {
-                    message.answer("Plus de 10 jetons d'une même couleur? Tricheur!");
-                    message.react("👎");
-                    return;
-                } else {
-                    message.react("👍🏼");
+                    cheat = true;
                 }
+            })
 
+            if (cheat) {
+                message.answer("Plus de 10 jetons d'une même couleur? Tricheur!");
+                message.react("👎");
+                return;
+            } else {
+                message.react("👍🏼");
+            }
+
+
+            // Create the bag of tokens
+            args.forEach(arg =>{
                 let token = arg.match(/^([1-9])([crfba])$/);
                 console.log(token);
                 if (token != null) {
@@ -97,8 +104,8 @@ client.on('message',(message)=>{
                         draw=num;
                     }
                     for (let i = 0; i<num; i++) {
-                            level++;
-                            tokens.push(letter);
+                        level++;
+                        tokens.push(letter);
                     }
                 }
             })
