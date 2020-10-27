@@ -78,7 +78,7 @@ client.on('message',(message)=>{
             // Check cheaters
             let cheat = false;
             args.forEach(arg =>{
-                let cheater = arg.match(/^([1-9]{2,})([crfba])$/);
+                let cheater = arg.match(/^([1-9][0-9]{1,})([crfba])$/);
                 if (cheater != null) {
                     cheat = true;
                 }
