@@ -21,7 +21,7 @@ const ICONS = {
     "café": "☕",
     "thé": "🍵",
     "bière": "🍺",
-    "boisson", "🧉"
+    "boisson": "🧉",
     "cocktail": "🍹"
 };
 
