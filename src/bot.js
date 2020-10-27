@@ -75,11 +75,19 @@ client.on('message',(message)=>{
                 return;
             }
 
-            message.react("👍🏼");
             // Create the bag of tokens
 
             args.forEach(arg =>{
-                let token = arg.match(/^([1-9]+)([crfba])$/);
+                let cheater = arg.match(/^([1-9]{2,})([crfba])$/);
+                if (cheater) {
+                    message.answer("Plus de 10 jetons d'une même couleur? Tricheur!");
+                    message.react("👎");
+                    return;
+                } else {
+                    message.react("👍🏼");
+                }
+
+                let token = arg.match(/^([1-9])([crfba])$/);
                 if (token != null) {
                     let num=parseInt(token[1]);
                     let letter=token[2];
