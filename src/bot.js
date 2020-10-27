@@ -85,7 +85,7 @@ client.on('message',(message)=>{
             })
 
             if (cheat) {
-                message.answer("Plus de 10 jetons d'une même couleur? Tricheur!");
+                message.reply("Plus de 10 jetons d'une même couleur? Tricheur!");
                 message.react("👎");
                 return;
             } else {
