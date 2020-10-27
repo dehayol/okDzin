@@ -21,10 +21,11 @@ const ICONS = {
     "café": "☕",
     "thé": "🍵",
     "bière": "🍺",
+    "boisson", "🧉"
     "cocktail": "🍹"
 };
 
-const BOISSONS = ["café", "thé", "bière", "cocktail"];
+const BOISSONS = ["café", "thé", "bière", "cocktail", "boisson""];
 
 function tokenlist(){
     let listOfTokens="";
@@ -75,7 +76,7 @@ client.on('message',(message)=>{
                 return;
             }
 
-            // Check cheaters
+            // Check cheaters and display mode
             let cheat = false;
             args.forEach(arg =>{
                 let cheater = arg.match(/^([1-9][0-9]{1,})([crfba])$/);
@@ -127,10 +128,12 @@ client.on('message',(message)=>{
 
             // Résultat
             for (let key in result) {
-                answer += "\n**"+result[key]+"** "+ICONS[key]+"";
+                    for (let k = 0; k<key ; k++) {
+                        answer += ICONS[key] + " "
+                    }
             }
 
-            answer = "\n**Total: "+level+"**"+answer;
+            answer = "**Total: "+level+" - Tirage: **"+answer;
 
             message.reply(answer);
 
