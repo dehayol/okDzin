@@ -70,7 +70,7 @@ client.on('message',(message)=>{
             });
 
 
-            if (cheater != null) {
+            if (args.length === 0) {
                 message.reply(HELPMESSAGE);
                 return;
             }
@@ -80,7 +80,7 @@ client.on('message',(message)=>{
             args.forEach(arg =>{
                 let cheater = arg.match(/^([1-9]{2,})([crfba])$/);
                 console.log(cheater);
-                if (cheater.length>0) {
+                if (cheater != null) {
                     message.answer("Plus de 10 jetons d'une même couleur? Tricheur!");
                     message.react("👎");
                     return;
@@ -103,7 +103,7 @@ client.on('message',(message)=>{
                 }
             })
 
-            if (tokens.length==0) {return;}
+            if (tokens.length===0) {return;}
 
             // Tirage
 
