@@ -49,7 +49,7 @@ client.on('message',(message)=>{
     if (message.content.startsWith(PREFIX)){
         const [CMD_NAME, ...args] = message.content
             .toLowerCase()
-            .replace(/[.!?]$/,'')
+            .replace(/[.!?,]$/,' ')
             .trim()
             .substring(PREFIX.length)
             .split(/\s+/);
@@ -78,15 +78,24 @@ client.on('message',(message)=>{
 
             // Check cheaters and display mode
             let cheat = false;
+            let risk = false;
             args.forEach(arg =>{
                 let cheater = arg.match(/^([1-9][0-9]{1,})([crfba])$/);
+                let isRisk = arg.match(/^[1-9]r$/);
                 if (cheater != null) {
                     cheat = true;
+                }
+                if (isRisk !=null) {
+                    risk = true;
                 }
             })
 
             if (cheat) {
                 message.reply("Plus de 9 jetons d'une même couleur? Tricheur!");
+                message.react("👎");
+                return;
+            } else if (!risk) {
+                message.reply("Y'a pas de risque, va faire caca dans les bois. Fais gaffe aux orties, quand-même!");
                 message.react("👎");
                 return;
             } else {
