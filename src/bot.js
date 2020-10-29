@@ -25,7 +25,7 @@ const ICONS = {
     "cocktail": "🍹"
 };
 
-const BOISSONS = ["café", "thé", "bière", "cocktail", "boisson"];
+const BEVERAGES = ["café", "thé", "bière", "cocktail", "boisson"];
 
 function tokenlist(){
     let listOfTokens="";
@@ -35,8 +35,119 @@ function tokenlist(){
     return listOfTokens;
 }
 
-const HELPMESSAGE = "besoin d'aide? Le format est `?okdzin 2c 2r 1f 1b 1a`\n" +
-    tokenlist() + "\n(Je ne suis pas regardant sur les majuscules. Bisous.)";
+function commandOkdzin (message){
+    const HELPMESSAGE = "besoin d'aide? Le format est `"+ PREFIX + "okdzin 2c 2r 1f 1b 1a`\n" +
+        tokenlist() + "\n(Je ne suis pas regardant sur les majuscules. Bisous.)";
+
+    let tokens = new Array();
+    let draw = 1;
+    let result = {};
+    let answer="";
+    let level=0;
+
+    const [CMD_NAME, ...args] = message.content
+        .toLowerCase()
+        .replace(/[^\w\sÀ-ÿ]/g,' ')
+        .replace(/0+([1-9])/g, "$1")
+        .trim()
+        .substring(PREFIX.length)
+        .split(/\s+/);
+
+
+    if (args.length === 0) {
+        message.reply(HELPMESSAGE);
+        return;
+    }
+
+    // On commence par les boissons
+    BEVERAGES.forEach(function (i){
+        if (args.includes(i)) {
+            message.react(ICONS[i])
+                .catch(console.error);
+        }
+    });
+
+    // Check cheaters
+    let cheat = false;
+    let risk = false;
+    args.forEach(arg =>{
+        let cheater = arg.atch(/^([1-9][0-9]{1,})([crfba])$/);
+        let isRisk = arg.match(/^[1-9]r$/);
+        if (cheater != null) {
+            cheat = true;
+        }
+        if (isRisk !=null) {
+            risk = true;
+        }
+    })
+
+    /*
+        TODO: Check for duplicate tokens
+    */
+
+    if (cheat) {
+        message.reply("Plus de 9 jetons d'une même couleur? Tricheur!");
+        message.react("👎");
+        return;
+    } else if (!risk) {
+        message.reply("Y'a pas de risque, va faire caca dans les bois. Fais gaffe aux orties, quand-même!");
+        message.react("👎");
+        return;
+    } else {
+        message.react("👍🏼");
+    }
+
+
+    // Create the bag of tokens
+    args.forEach(arg =>{
+        let token = arg.match(/^([1-9])([crfba])$/);
+        if (token != null) {
+            let num=parseInt(token[1]);
+            let letter=token[2];
+            if (letter === 'r'){
+                draw=num;
+            }
+            for (let i = 0; i<num; i++) {
+                level++;
+                tokens.push(letter);
+            }
+        }
+    })
+
+    if (tokens.length===0) {return;}
+
+    // Tirage
+
+    for (let i=0; i<draw; i++){
+        pos=Math.floor(Math.random() * tokens.length);
+        let token = tokens[pos];
+        if (isNaN(result[token])){
+            result[token] = 1;
+        } else {
+            result[token]=result[token]+1;
+        }
+        tokens.splice(pos,1);
+    }
+
+    // Résultat
+    for (let key in result) {
+        for (let k = 0; k<result[key] ; k++) {
+            answer += ICONS[key] + " ";
+        }
+    }
+
+    answer =  "\n**Total: "+level+" - Tirage: **"+answer;
+    message.reply(answer);
+
+}
+
+function commandDDzin (args){
+
+}
+
+
+
+
 
 
 client.on('ready', () =>{
@@ -49,107 +160,18 @@ client.on('message',(message)=>{
     if (message.content.startsWith(PREFIX)){
         const [CMD_NAME, ...args] = message.content
             .toLowerCase()
-            .replace(/[.!?,]$/,' ')
-            .trim()
             .substring(PREFIX.length)
             .split(/\s+/);
 
+
         if ((CMD_NAME === "okdzin") || (CMD_NAME === "od") ) {
-            let tokens = new Array();
-            let draw = 1;
-            let result = {};
-            let answer="";
-            let level=0;
-
-            // On commence par les boissons
-            BOISSONS.forEach(function (i){
-                if (args.includes(i)) {
-                    console.log(args.includes(i));
-                    message.react(ICONS[i])
-                        .catch(console.error);
-                }
-            });
-
-
-            if (args.length === 0) {
-                message.reply(HELPMESSAGE);
-                return;
-            }
-
-            // Check cheaters and display mode
-            let cheat = false;
-            let risk = false;
-            args.forEach(arg =>{
-                let cheater = arg.match(/^([1-9][0-9]{1,})([crfba])$/);
-                let isRisk = arg.match(/^[1-9]r$/);
-                if (cheater != null) {
-                    cheat = true;
-                }
-                if (isRisk !=null) {
-                    risk = true;
-                }
-            })
-
-            if (cheat) {
-                message.reply("Plus de 9 jetons d'une même couleur? Tricheur!");
-                message.react("👎");
-                return;
-            } else if (!risk) {
-                message.reply("Y'a pas de risque, va faire caca dans les bois. Fais gaffe aux orties, quand-même!");
-                message.react("👎");
-                return;
-            } else {
-                message.react("👍🏼");
-            }
-
-
-            // Create the bag of tokens
-            args.forEach(arg =>{
-                let token = arg.match(/^([1-9])([crfba])$/);
-                console.log(token);
-                if (token != null) {
-                    let num=parseInt(token[1]);
-                    let letter=token[2];
-                    if (letter === 'r'){
-                        draw=num;
-                    }
-                    for (let i = 0; i<num; i++) {
-                        level++;
-                        tokens.push(letter);
-                    }
-                }
-            })
-
-            if (tokens.length===0) {return;}
-
-            // Tirage
-
-            for (let i=0; i<draw; i++){
-                pos=Math.floor(Math.random() * tokens.length);
-                let token = tokens[pos];
-                if (isNaN(result[token])){
-                    result[token] = 1;
-                } else {
-                    result[token]=result[token]+1;
-                }
-                tokens.splice(pos,1);
-            }
-
-            // Résultat
-            for (let key in result) {
-                    for (let k = 0; k<result[key] ; k++) {
-                        answer += ICONS[key] + " ";
-                    }
-            }
-
-            answer = "\n**Total: "+level+" - Tirage: **"+answer;
-
-            message.reply(answer);
+            commandOkdzin(message);
 
         } else {
             return;
         }
     }
+
 });
 
 
@@ -157,5 +179,5 @@ client.login(process.env.DISCORDJS_BOT_TOKEN);
 
 /*
 * Refais ça et un tisseur t'efface du plan de la réalité
-* Tu perd un point de compétence
+* Tu perds un point de compétence
 *  */
