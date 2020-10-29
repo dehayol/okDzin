@@ -69,28 +69,15 @@ function commandOkdzin (message){
     });
 
     // Check cheaters
-    let cheat = false;
     let risk = false;
     args.forEach(arg =>{
-        let cheater = arg.match(/^([1-9][0-9]{1,})([crfba])$/);
         let isRisk = arg.match(/^[1-9]r$/);
-        if (cheater != null) {
-            cheat = true;
-        }
         if (isRisk !=null) {
             risk = true;
         }
     })
 
-    /*
-        TODO: Check for duplicate tokens
-    */
-
-    if (cheat) {
-        message.reply("Plus de 9 jetons d'une même couleur? Tricheur!");
-        message.react("👎");
-        return;
-    } else if (!risk) {
+   if (!risk) {
         const noRiskTxt = [
             "Va faire caca dans les bois. Fais gaffe aux orties, quand-même!",
             "Refais ça et un tisseur t'efface de la trame de la réalité",
@@ -110,15 +97,25 @@ function commandOkdzin (message){
         if (token != null) {
             let num=parseInt(token[1]);
             let letter=token[2];
-            if (letter === 'r'){
-                draw=num;
-            }
             for (let i = 0; i<num; i++) {
                 level++;
                 tokens.push(letter);
             }
         }
     })
+    /* check that no token has more than 9 items */
+    for (var key in TOKEN_TYPE) {
+        let num = tokens.filter(x => x === key).length;
+        if (num>9) {
+            message.reply("Plus de 9 jetons d'une même couleur? Tricheur!");
+            message.react("👎");
+            return;
+        } else if (key==='r') {
+            draw=num;
+        }
+
+    }
+
 
     if (tokens.length===0) {return;}
 
