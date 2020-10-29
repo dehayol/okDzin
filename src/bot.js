@@ -91,7 +91,12 @@ function commandOkdzin (message){
         message.react("👎");
         return;
     } else if (!risk) {
-        message.reply("Y'a pas de risque, va faire caca dans les bois. Fais gaffe aux orties, quand-même!");
+        const noRiskTxt = [
+            "Va faire caca dans les bois. Fais gaffe aux orties, quand-même!",
+            "Refais ça et un tisseur t'efface de la trame de la réalité",
+            "Pas de risque? Pas de tirage!"
+        ];
+        message.reply("Il n'y a pas de risque. " + noRiskTxt[Math.floor(Math.random() * noRiskTxt.length)]);
         message.react("👎");
         return;
     } else {
@@ -179,6 +184,6 @@ client.on('message',(message)=>{
 client.login(process.env.DISCORDJS_BOT_TOKEN);
 
 /*
-* Refais ça et un tisseur t'efface du plan de la réalité
+*
 * Tu perds un point de compétence
 *  */
