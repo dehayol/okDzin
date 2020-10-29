@@ -53,6 +53,7 @@ function commandOkdzin (message){
         .substring(PREFIX.length)
         .split(/\s+/);
 
+    console.log(args);
 
     if (args.length === 0) {
         message.reply(HELPMESSAGE);
@@ -71,7 +72,7 @@ function commandOkdzin (message){
     let cheat = false;
     let risk = false;
     args.forEach(arg =>{
-        let cheater = arg.atch(/^([1-9][0-9]{1,})([crfba])$/);
+        let cheater = arg.match(/^([1-9][0-9]{1,})([crfba])$/);
         let isRisk = arg.match(/^[1-9]r$/);
         if (cheater != null) {
             cheat = true;
