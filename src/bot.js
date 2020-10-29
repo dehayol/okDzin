@@ -3,7 +3,7 @@ require('dotenv').config();
 const discord = require('discord.js');
 const client = new discord.Client();
 
-const PREFIX = "!";
+const PREFIX = "?";
 const TOKEN_TYPE = {
     "c": "Compétence",
     "r": "Risque",
@@ -154,3 +154,8 @@ client.on('message',(message)=>{
 
 
 client.login(process.env.DISCORDJS_BOT_TOKEN);
+
+/*
+* Refais ça et un tisseur t'efface du plan de la réalité
+* Tu perd un point de compétence
+*  */
