@@ -35,7 +35,7 @@ function tokenlist(){
     return listOfTokens;
 }
 
-const HELPMESSAGE = "besoin d'aide? Le format est `!okdzin 2c 2r 1f 1b 1a`\n" +
+const HELPMESSAGE = "besoin d'aide? Le format est `?okdzin 2c 2r 1f 1b 1a`\n" +
     tokenlist() + "\n(Je ne suis pas regardant sur les majuscules. Bisous.)";
 
 
