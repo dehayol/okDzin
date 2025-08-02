@@ -20,6 +20,6 @@
   "homepage": "https://github.com/dehayol/okDzin#readme",
   "dependencies": {
     "discord.js": "^12.4.0",
-    "dotenv": "^8.2.0"
+    "dotenv": "^17.2.1"
   }
 }
