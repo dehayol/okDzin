@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/dehayol/okDzin#readme",
   "dependencies": {
-    "discord.js": "^12.4.0",
+    "discord.js": "^14.22.1",
     "dotenv": "^8.2.0"
   }
 }
